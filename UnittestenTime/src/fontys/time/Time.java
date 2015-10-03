@@ -51,24 +51,9 @@ public class Time implements ITime {
     @Override
     public DayInWeek getDayInWeek() {
         int day_of_week = gc.get(GregorianCalendar.DAY_OF_WEEK);
-        switch (day_of_week) {
-            case GregorianCalendar.SUNDAY:
-                return DayInWeek.SUN;
-            case GregorianCalendar.MONDAY:
-                return DayInWeek.MON;
-            case GregorianCalendar.TUESDAY:
-                return DayInWeek.TUE;
-            case GregorianCalendar.WEDNESDAY:
-                return DayInWeek.WED;
-            case GregorianCalendar.THURSDAY:
-                return DayInWeek.THU;
-            case GregorianCalendar.FRIDAY:
-                return DayInWeek.FRI;
-            case GregorianCalendar.SATURDAY:
-                return DayInWeek.SAT;
-            default:
-                return null;
-        }
+        
+        DayInWeek days[] = DayInWeek.values();
+        return DayInWeek.valueOf(days[day_of_week-1].toString());
     }
 
     @Override
