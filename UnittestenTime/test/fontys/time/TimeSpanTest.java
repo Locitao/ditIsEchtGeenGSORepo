@@ -5,22 +5,33 @@
  */
 package fontys.time;
 
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 /**
  *
- * @author Rick van Duijnhoven
- * NOT YET FINISHED
+ * @author Rick van Duijnhoven - Created first unit tests
+ * @author Jules Kreutzer - Completed unit tests, specifications
  */
 public class TimeSpanTest {
     Time t1 = new Time(2014, 10, 10, 20, 20);
     Time t2 = new Time(2015, 5, 5, 5, 10);
     TimeSpan tsTest = new TimeSpan(t1, t2);
+    
+    /**
+     * exception can be used to expect an exception
+     * usage:
+     * exception.expect(ClassName.class);
+     */
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     /**
      * Test of getBeginTime method, of class TimeSpan.
@@ -47,34 +58,57 @@ public class TimeSpanTest {
     }
 
     /**
-     * Test of setBeginTime method, of class TimeSpan.
+     * Test the SetBeginThime Method
+     * This will return an IllegalArgumentException because when creating the badTime instance is created, 25 is used for the hour parameter
+     * 
+     * Expected: IllegalArgument Exception as it will be thrown in the Time constructor
+     */
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetBeginTimeBad() {
+        Time badTime = new Time(2016, 10, 10, 25, 25);
+        
+        TimeSpan ts = tsTest;
+        ts.setBeginTime(badTime);
+    }
+    
+    /**
+     * Test the SetBeginTime method
+     * Because the date is right, it should not return any error
      */
     @Test
-    public void testSetBeginTime() {
-        Time badTime = new Time(2016, 10, 10, 25, 25);
-        try
-        {
-            TimeSpan ts = tsTest;
-            ts.setBeginTime(badTime);
-            fail("Should have thrown an exception.");
-        } catch(Exception ex) {}
+    public void testSetBeginTimeGood() {
+        Time goodTime = new Time(2016, 10, 13, 5, 5);
         
-        Time goodTime = new Time(2015, 10, 13, 5, 5);
         TimeSpan ts = tsTest;
         ts.setBeginTime(goodTime);
+        
+        Assert.assertEquals(tsTest.getBeginTime(), goodTime);
     }
 
     /**
-     * Test of setEndTime method, of class TimeSpan.
+     * Test the SetEndTime method
+     * This test should return an IllegalArgumentException because the endtime is before the begin time
      */
     @Test
-    public void testSetEndTime() {
+    public void testSetEndTimeBad() {
         System.out.println("setEndTime");
-        ITime endTime = null;
-        TimeSpan instance = null;
+        ITime endTime = new Time(2013, 1, 1, 1, 1);
+        TimeSpan instance = tsTest;
         instance.setEndTime(endTime);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+    }
+    
+    /**
+     * Test the SetEndTime method
+     * This test should pass because the end time is after the begin time
+     */
+    @Test
+    public void testSetEndTimeGood() {
+        ITime endTime = new Time(2017, 1, 1, 1, 1);
+        TimeSpan instance = tsTest;
+        instance.setEndTime(endTime);
+        
+        Assert.assertEquals(endTime.toString(), tsTest.getEndTime().toString());
     }
 
     /**
@@ -87,7 +121,7 @@ public class TimeSpanTest {
         TimeSpan instance = null;
         instance.move(minutes);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        exception.expect(NullPointerException.class);
     }
 
     /**
@@ -99,8 +133,7 @@ public class TimeSpanTest {
         int minutes = 0;
         TimeSpan instance = null;
         instance.changeLengthWith(minutes);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        exception.expect(NullPointerException.class);
     }
 
     /**
@@ -114,8 +147,7 @@ public class TimeSpanTest {
         boolean expResult = false;
         boolean result = instance.isPartOf(timeSpan);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        exception.expect(NullPointerException.class);
     }
 
     /**
@@ -129,8 +161,7 @@ public class TimeSpanTest {
         ITimeSpan expResult = null;
         ITimeSpan result = instance.unionWith(timeSpan);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        exception.expect(NullPointerException.class);
     }
 
     /**
@@ -144,8 +175,6 @@ public class TimeSpanTest {
         ITimeSpan expResult = null;
         ITimeSpan result = instance.intersectionWith(timeSpan);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        exception.expect(NullPointerException.class);    }
     
 }
