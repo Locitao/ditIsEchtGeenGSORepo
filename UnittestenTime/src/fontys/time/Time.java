@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 
 /**
  *
- * @author Frank Peeters, Nico Kuijpers
+ * @author Frank Peeters, Nico Kuijpers, Rick van Duijnhoven
  * 
  * LET OP: De klasse Time bevat enkele fouten.
  * 
@@ -37,11 +37,11 @@ public class Time implements ITime {
         if (h < 0 || h > 23) {
             throw new IllegalArgumentException("hours must be within 0..23");
         }
-        if (m < 0 || m > 59) {
+        if (min < 0 || min > 59) {
             throw new IllegalArgumentException("minutes must be within 0..59");
         }
         
-        gc = new GregorianCalendar(y, m , d, h, min);
+        gc = new GregorianCalendar(y, m-1, d, h, min);
     }
 
     Time(Time t) {
@@ -105,13 +105,23 @@ public class Time implements ITime {
 
     @Override
     public int compareTo(ITime t) {
+        if (t == null)
+            throw new IllegalArgumentException("Object can't be null");
+        else if (!(t instanceof Time))
+            throw new IllegalArgumentException("Object should be of type Time");
+        
         Time time = (Time) t;
         return time.gc.compareTo(gc);
     }
 
     @Override
     public int difference(ITime time) {
+        if(time == null)
+            throw new IllegalArgumentException("Object can't be null.");
+        else if(!(time instanceof Time))
+            throw new IllegalArgumentException("Object must be of type Time.");
+        
         Time t = (Time) time;
-        return (int) ((this.gc.getTimeInMillis() - t.gc.getTimeInMillis()) / 600000);
+        return (int) ((this.gc.getTimeInMillis() - t.gc.getTimeInMillis()) / 60000);
     }
 }

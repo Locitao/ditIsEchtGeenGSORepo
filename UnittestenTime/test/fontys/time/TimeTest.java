@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -23,12 +24,100 @@ public class TimeTest {
     final int year = 1994, month = 10, day = 13;
     final int hours = 0, minutes = 59;
     
-    @BeforeClass
-    public void setUpClass() {
+    @Before
+    public void setUp() {
         defaultTime = new Time(year, month, day, hours, minutes);
     }
     
-
+    
+    /**
+     * Test creating a Time object
+     */
+    @Test
+    public void testCreation() {
+        try
+        {
+            Time t = new Time(1994, 10, 10, 0, 0);
+            assertNotNull("Time can't be null", t);
+        }
+        catch (IllegalArgumentException ex)
+        {
+            fail("IllegalArgumentException has occured");
+        }
+    }
+    
+    /**
+     * Test entering an illegal date
+     */
+    @Test
+    public void testIllegalDate(){
+        /**
+         * wrong day
+         */
+        try
+        {
+            Time t = new Time(1994, 10, 35, 0, 0);
+            fail("Should have thrown an illegalArgumentException");
+        }
+        catch (IllegalArgumentException ex) {}
+        
+        try
+        {
+            Time t = new Time(1994, 10, -10, 0, 0);
+            fail("Should've thrown illegalArgumentException");
+        }
+        catch (IllegalArgumentException ex) {}
+        
+        /**
+         * Test a wrong month
+         */
+        try
+        {
+            Time t = new Time(1994, 30, 20, 0, 0);
+            fail("Should have thrown an illegalArgumentException");
+        }
+        catch (IllegalArgumentException ex) {}
+        
+        try
+        {
+            Time t = new Time(1994, -10, 10, 0, 0);
+            fail("Should've thrown illegalArgumentException");
+        }
+        catch (IllegalArgumentException ex) {}
+    }
+    
+    /**
+     * Test illegal entries for hours and minutes
+     */
+    @Test
+    public void testIllegalHourMinutes() {
+        /**
+         * Wrong hour.
+         */
+        try {
+            Time t = new Time(1994, 12, 25, -42, 0);
+            fail("Should've been IllegalArgumentException: hour");
+        } catch (IllegalArgumentException ex) { }
+        
+        try {
+            Time t = new Time(1994, 12, 25, 420, 0);
+            fail("Should've been IllegalArgumentException: hour");
+        } catch (IllegalArgumentException ex) { }
+        
+        /**
+         * Wrong minute.
+         */
+        try {
+            Time t = new Time(1994, 12, 25, 21, 60);
+            fail("Should've been illegalArgumentException: minutes");
+        } catch (IllegalArgumentException ex) { }
+        
+        try {
+            Time t = new Time(1994, 12, 25, 21, -5);
+            fail("Should've been illegalArgumentException: minutes");
+        } catch (IllegalArgumentException ex) { }
+    }
+    
     /**
      * Test of getDayInWeek method, of class Time.
      */
@@ -37,7 +126,7 @@ public class TimeTest {
         DayInWeek thisWeek = this.defaultTime.getDayInWeek();
         assertNotNull("thisWeek can't be null", thisWeek);
         
-        assertEquals("Should return WED", thisWeek, DayInWeek.WED);
+        assertEquals("Should return THU", thisWeek, DayInWeek.THU);
     }
 
     /**
@@ -120,7 +209,7 @@ public class TimeTest {
     @Test(expected=IllegalArgumentException.class)
     public void testCompareTo() {
         assertEquals("Should be the same object in terms of content", 0, defaultTime.compareTo(defaultTime));
-        assertEquals("Objects should be different in terms of content", 1, defaultTime.plus(2));
+        assertEquals("Objects should be different in terms of content", 1, defaultTime.compareTo(defaultTime.plus(2)));
         assertEquals("Objects should be the same in terms of content", 0, defaultTime.plus(2).compareTo(defaultTime.plus(2)));
         
         try
