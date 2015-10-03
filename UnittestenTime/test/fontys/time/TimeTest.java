@@ -117,31 +117,98 @@ public class TimeTest {
     /**
      * Test of compareTo method, of class Time.
      */
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void testCompareTo() {
-        System.out.println("compareTo");
-        ITime t = null;
-        Time instance = null;
-        int expResult = 0;
-        int result = instance.compareTo(t);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Should be the same object in terms of content", 0, defaultTime.compareTo(defaultTime));
+        assertEquals("Objects should be different in terms of content", 1, defaultTime.plus(2));
+        assertEquals("Objects should be the same in terms of content", 0, defaultTime.plus(2).compareTo(defaultTime.plus(2)));
+        
+        try
+        {
+            FakeTime fake = new FakeTime();
+            defaultTime.compareTo(fake);
+            fail("No check if fake is a Time object");
+        }
+        catch (IllegalArgumentException ex){ }
+        
+        defaultTime.compareTo(null);
     }
 
     /**
      * Test of difference method, of class Time.
      */
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void testDifference() {
-        System.out.println("difference");
-        ITime time = null;
-        Time instance = null;
-        int expResult = 0;
-        int result = instance.difference(time);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Time t = (Time) defaultTime.plus(500);
+        int difference = defaultTime.difference(t);
+        assertEquals("Amount of negative minutes should be the same", -500, difference);
+        
+        t = (Time) defaultTime.plus(-500);
+        difference = defaultTime.difference(t);
+        assertEquals("Minutes should be the same now", 500, difference);
+        
+        try
+        {
+            FakeTime fake = new FakeTime();
+            defaultTime.difference(fake);
+            fail("No check if it's a time object");
+        }
+        catch (IllegalArgumentException ex) {}
+        
+        defaultTime.difference(null);
+    }
+    
+    /**
+     * Static class to compare instances, with instanceOf
+     */
+    private static class FakeTime implements ITime {
+        public FakeTime() {
+        }
+
+        @Override
+        public int getYear() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public int getMonth() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public int getDay() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public int getHours() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public int getMinutes() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public DayInWeek getDayInWeek() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public ITime plus(int minutes) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public int difference(ITime time) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public int compareTo(ITime o) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
     }
     
 }
