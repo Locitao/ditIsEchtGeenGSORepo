@@ -61,7 +61,7 @@ public class Contact {
      * @return true or false, depending on if appointment was added or not.
      */
     
-    public boolean addApointment(Appointment a)
+    boolean addAppointment(Appointment a)
     {
         Iterator<Appointment> ap = this.appointments();
         while(ap.hasNext())
@@ -97,7 +97,7 @@ public class Contact {
      * @param a is the given appointment.
      */
     
-    public void removeAppointment(Appointment a)
+    void removeAppointment(Appointment a)
     {
         if (a == null)
             throw new IllegalArgumentException("Appointment cannot be null.");

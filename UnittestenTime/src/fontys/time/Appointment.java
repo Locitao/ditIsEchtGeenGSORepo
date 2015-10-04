@@ -5,22 +5,91 @@
  */
 package fontys.time;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  *
  * @author Jules Kreutzer
  * @author Rick van Duijnhoven added some empty methods to program Contact.java
  */
 public class Appointment {
-    TimeSpan ts;
+    /**
+     * Duration of appointment.
+     */
+    private ITimeSpan duration;
     
-    public Appointment()
+    /**
+     * Subject of appointment.
+     */
+    private String subject;
+    
+    /**
+     * List of contacts invited to appointment.
+     */
+    private List<Contact> invitedPeople;
+    /**
+     * 
+     * @param subject of the appointment.
+     * @param timeSpan Duration of the appointment.
+     */
+    
+    public Appointment(String subject, ITimeSpan timeSpan)
     {
+        if (subject == null || timeSpan == null)
+            throw new IllegalArgumentException("Neither subject nor timeSpan can be null");
         
+        this.invitedPeople = new ArrayList<>();
+        this.duration = timeSpan;
+        this.subject = subject;
     }
     
-    public TimeSpan getTimeSpan()
+    /**
+     * 
+     * @return the duration of the appointment. 
+     */
+    public ITimeSpan getTimeSpan()
     {
-        return ts;
+        return duration;
     }
     
+    /**
+     * 
+     * @return the subject of the appointment.
+     */
+    public String getSubject()
+    {
+        return subject;
+    }
+    /**
+     * 
+     * @return Iterator of all contacts of appointment.
+     */
+    public Iterator<Contact> invited()
+    {
+        return invitedPeople.iterator();
+    }
+    /**
+     * Adds a new contact to invitees
+     * @param c is the contact to be added.
+     * @return true if succeeded; false if not.
+     */
+    public boolean addContact(Contact c)
+    {
+        if (!c.addAppointment(this))
+            return false;
+        
+        invitedPeople.add(c);
+        return true;
+    }
+    /**
+     * Removes the given contact from invitees
+     * @param c the given contact.
+     */
+    public void removeContact(Contact c)
+    {
+        if(invitedPeople.contains(c))
+            invitedPeople.remove(c);
+    }
 }
