@@ -90,31 +90,32 @@ public class TimeSpanTest {
         
         Assert.assertEquals(" tsTest must be before endTime", tsTest.getBeginTime().toString(), goodTime.toString());
     }
-
-    /**
-     * Test the SetEndTime method
-     * This test should return an IllegalArgumentException because the endtime is before the begin time
-     */
-    @Test
-    public void testSetEndTimeBad() {
-        System.out.println("setEndTime");
-        ITime endTime = new Time(2013, 1, 1, 1, 1);
-        TimeSpan instance = tsTest;
-        instance.setEndTime(endTime);
-        
-    }
     
     /**
      * Test the SetEndTime method
      * This test should pass because the end time is after the begin time
      */
     @Test
-    public void testSetEndTimeGood() {
+    public void testSetEndTime() {
+        /*
         ITime endTime = new Time(2222, 1, 1, 1, 1);
         TimeSpan instance = tsTest;
         instance.setEndTime(endTime);
         
         Assert.assertTrue(tsTest.getEndTime().equals(endTime));
+        */
+        
+        Time badTime = new Time(2010, 12, 4, 18, 20);
+        try {
+            TimeSpan tsTestEndTime = tsTest;
+            tsTestEndTime.setEndTime(badTime);
+            Assert.fail("Should've thrown exception");
+        } catch (Exception e) {
+
+        }
+        Time newTimeCorrect = new Time(2015, 1, 1, 12, 01);
+        TimeSpan tsTestEndTime = tsTest;
+        tsTestEndTime.setEndTime(newTimeCorrect);
     }
 
     /**
