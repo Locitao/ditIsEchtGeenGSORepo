@@ -83,7 +83,7 @@ public class TimeSpan implements ITimeSpan {
 
     @Override
     public void changeLengthWith(int minutes) {
-        if (minutes <= 0) {
+         if (minutes <= 0) {
             throw new IllegalArgumentException("length of period must be positive");
         }
         

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Appointment.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UnittestenTime&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">fontys.time</a> &gt; <span class="el_source">Appointment.java</span></div><h1>Appointment.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package fontys.time;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ *
+ * @author Jules Kreutzer
+ * @author Rick van Duijnhoven added some empty methods to program Contact.java
+ */
+public class Appointment {
+    /**
+     * Duration of appointment.
+     */
+    private ITimeSpan duration;
+    
+    /**
+     * Subject of appointment.
+     */
+    private String subject;
+    
+    /**
+     * List of contacts invited to appointment.
+     */
+    private List&lt;Contact&gt; invitedPeople;
+    /**
+     * 
+     * @param subject of the appointment.
+     * @param timeSpan Duration of the appointment.
+     */
+    
+    public Appointment(String subject, ITimeSpan timeSpan)
+<span class="fc" id="L39">    {</span>
+<span class="pc bpc" id="L40" title="2 of 4 branches missed.">        if (subject == null || timeSpan == null)</span>
+<span class="nc" id="L41">            throw new IllegalArgumentException(&quot;Neither subject nor timeSpan can be null&quot;);</span>
+        
+<span class="fc" id="L43">        this.invitedPeople = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L44">        this.duration = timeSpan;</span>
+<span class="fc" id="L45">        this.subject = subject;</span>
+<span class="fc" id="L46">    }</span>
+    
+    /**
+     * 
+     * @return the duration of the appointment. 
+     */
+    public ITimeSpan getTimeSpan()
+    {
+<span class="fc" id="L54">        return duration;</span>
+    }
+    
+    /**
+     * 
+     * @return the subject of the appointment.
+     */
+    public String getSubject()
+    {
+<span class="fc" id="L63">        return subject;</span>
+    }
+    /**
+     * 
+     * @return Iterator of all contacts of appointment.
+     */
+    public Iterator&lt;Contact&gt; invited()
+    {
+<span class="fc" id="L71">        return invitedPeople.iterator();</span>
+    }
+    /**
+     * Adds a new contact to invitees
+     * @param c is the contact to be added.
+     * @return true if succeeded; false if not.
+     */
+    public boolean addContact(Contact c)
+    {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (!c.addAppointment(this))</span>
+<span class="fc" id="L81">            return false;</span>
+        
+<span class="fc" id="L83">        invitedPeople.add(c);</span>
+<span class="fc" id="L84">        return true;</span>
+    }
+    /**
+     * Removes the given contact from invitees
+     * @param c the given contact.
+     */
+    public void removeContact(Contact c)
+    {
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if(invitedPeople.contains(c))</span>
+<span class="fc" id="L93">            invitedPeople.remove(c);</span>
+<span class="fc" id="L94">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

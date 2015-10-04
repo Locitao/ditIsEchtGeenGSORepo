@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Contact.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UnittestenTime&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">fontys.time</a> &gt; <span class="el_source">Contact.java</span></div><h1>Contact.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package fontys.time;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ *
+ * @author Rick van Duijnhoven
+ */
+public class Contact {
+    
+    /**
+     * Name of contact.
+     */
+    
+    private String name;
+    
+    /**
+     * List of appointments
+     */
+    
+    private List&lt;Appointment&gt; appointments;
+    
+    /**
+     * Constructor which creates a new contact with the given name.
+     * Also creates an appointment list for this person.
+     * @param name of contact.
+     */
+    
+    public Contact(String name)
+<span class="fc" id="L37">    {</span>
+<span class="fc bfc" id="L38" title="All 4 branches covered.">        if (name == null || name.equals(&quot;&quot;))</span>
+        {
+<span class="fc" id="L40">            throw new IllegalArgumentException(&quot;Name cannot be nothing&quot;);</span>
+        }
+<span class="fc" id="L42">        this.name = name;</span>
+<span class="fc" id="L43">        appointments = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L44">    }</span>
+    
+    /**
+     * Method to return the name
+     * @return the name of the contact.
+     */
+    
+    public String getName()
+    {
+<span class="fc" id="L53">        return name;</span>
+    }
+    
+    /**
+     * Add a new appointment. Check for:
+     * Appointment cannot overlap with another.
+     * End time must be earlier than begin time.
+     * @param a is a given appointment.
+     * @return true or false, depending on if appointment was added or not.
+     */
+    
+    boolean addAppointment(Appointment a)
+    {
+<span class="fc" id="L66">        Iterator&lt;Appointment&gt; ap = this.appointments();</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        while(ap.hasNext())</span>
+        {
+<span class="fc" id="L69">            Appointment t = ap.next();</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            if(t.equals(a))</span>
+<span class="fc" id="L71">                return false;</span>
+            
+<span class="fc" id="L73">            ITimeSpan time = t.getTimeSpan();</span>
+<span class="fc" id="L74">            ITimeSpan duration = a.getTimeSpan();</span>
+            
+            //Given time falls inside time of another appointment
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">            if(duration.getBeginTime().difference(time.getBeginTime()) &lt;= 0</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                    &amp;&amp; duration.getEndTime().difference(time.getEndTime()) &gt;= 0)</span>
+<span class="nc" id="L79">                return false;</span>
+            
+            //Given begin time is in another appointment.
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">            if(duration.getBeginTime().difference(time.getBeginTime()) &gt;= 0</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">                    &amp;&amp; duration.getBeginTime().difference(time.getBeginTime()) &lt; 0)</span>
+<span class="nc" id="L84">                return false;</span>
+            
+            //Given end time is in another appointment.
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">            if(duration.getEndTime().difference(time.getBeginTime()) &gt; 0</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">                    &amp;&amp; duration.getEndTime().difference(time.getEndTime()) &lt; 0)</span>
+<span class="nc" id="L89">                return false;</span>
+<span class="fc" id="L90">        }</span>
+<span class="fc" id="L91">        appointments.add(a);</span>
+<span class="fc" id="L92">        return true;</span>
+    }
+    
+    /**
+     * Remove an appointment.
+     * @param a is the given appointment.
+     */
+    
+    void removeAppointment(Appointment a)
+    {
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (a == null)</span>
+<span class="nc" id="L103">            throw new IllegalArgumentException(&quot;Appointment cannot be null.&quot;);</span>
+<span class="fc" id="L104">        appointments.remove(a);</span>
+<span class="fc" id="L105">    }</span>
+    /**
+     * Get all appointments through an iterator.
+     * @return an iterator of appointments.
+     */
+    
+    public Iterator&lt;Appointment&gt; appointments()
+    {
+<span class="fc" id="L113">        return appointments.iterator();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
