@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TimeSpan.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UnittestenTime&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">fontys.time</a> &gt; <span class="el_source">TimeSpan.java</span></div><h1>TimeSpan.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TimeSpan.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;UnittestenTime&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">fontys.time</a> &gt; <span class="el_source">TimeSpan.java</span></div><h1>TimeSpan.java</h1><pre class="source lang-java linenums">/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
@@ -53,8 +53,8 @@ public class TimeSpan implements ITimeSpan {
 
     @Override
     public void setBeginTime(ITime beginTime) {
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (beginTime.compareTo(et) &gt;= 0) {</span>
-<span class="fc" id="L57">            throw new IllegalArgumentException(&quot;begin time &quot;</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (beginTime.compareTo(et) &gt;= 0) {</span>
+<span class="nc" id="L57">            throw new IllegalArgumentException(&quot;begin time &quot;</span>
                     + bt + &quot; must be earlier than end time &quot; + et);
         }
 
@@ -83,17 +83,17 @@ public class TimeSpan implements ITimeSpan {
 
     @Override
     public void changeLengthWith(int minutes) {
-<span class="pc bpc" id="L86" title="1 of 2 branches missed.">         if (minutes &lt;= 0) {</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">         if (minutes &lt;= 0) {</span>
 <span class="fc" id="L87">            throw new IllegalArgumentException(&quot;length of period must be positive&quot;);</span>
         }
         
-<span class="nc" id="L90">        et = et.plus(minutes);</span>
-<span class="nc" id="L91">    }</span>
+<span class="fc" id="L90">        et = et.plus(minutes);</span>
+<span class="fc" id="L91">    }</span>
 
     @Override
     public boolean isPartOf(ITimeSpan timeSpan) {
-<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        return (getBeginTime().compareTo(timeSpan.getBeginTime()) &gt;= 0</span>
-<span class="pc bpc" id="L96" title="1 of 2 branches missed.">                &amp;&amp; getEndTime().compareTo(timeSpan.getEndTime()) &lt;= 0);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        return (getBeginTime().compareTo(timeSpan.getBeginTime()) &gt;= 0</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">                &amp;&amp; getEndTime().compareTo(timeSpan.getEndTime()) &lt;= 0);</span>
     }
 
     @Override
@@ -123,20 +123,20 @@ public class TimeSpan implements ITimeSpan {
     public ITimeSpan intersectionWith(ITimeSpan timeSpan) {
 
         ITime begintime, endtime;
-<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (bt.compareTo(timeSpan.getBeginTime()) &gt; 0) {</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (bt.compareTo(timeSpan.getBeginTime()) &gt; 0) {</span>
 <span class="nc" id="L127">            begintime = bt;</span>
         } else {
-<span class="nc" id="L129">            begintime = timeSpan.getBeginTime();</span>
+<span class="fc" id="L129">            begintime = timeSpan.getBeginTime();</span>
         }
 
-<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (et.compareTo(timeSpan.getEndTime()) &lt; 0) {</span>
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (et.compareTo(timeSpan.getEndTime()) &lt; 0) {</span>
 <span class="nc" id="L133">            endtime = et;</span>
         } else {
-<span class="nc" id="L135">            endtime = timeSpan.getEndTime();</span>
+<span class="fc" id="L135">            endtime = timeSpan.getEndTime();</span>
         }
 
-<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (begintime.compareTo(endtime) &gt;= 0) {</span>
-<span class="nc" id="L139">            return null;</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (begintime.compareTo(endtime) &gt;= 0) {</span>
+<span class="fc" id="L139">            return null;</span>
         }
 
 <span class="nc" id="L142">        return new TimeSpan(begintime, endtime);</span>

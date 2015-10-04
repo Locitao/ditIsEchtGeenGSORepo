@@ -115,4 +115,11 @@ public class AppointmentTest {
         instance.removeContact(c);
     }
     
+    @Test(expected=IllegalArgumentException.class)
+    public void testBadConstructor()
+    {
+        Appointment p = new Appointment("asdf", null);
+        p = new Appointment(null, new TimeSpan(new Time(2000, 1, 1, 1, 1), new Time(2002, 1, 1, 1, 1)));
+    }
+    
 }
