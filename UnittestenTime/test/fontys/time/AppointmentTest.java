@@ -14,6 +14,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -26,12 +27,17 @@ public class AppointmentTest {
     Contact contact;
     Contact contact2;
     Appointment appWithContact;
+    Time t1, t2;
+    TimeSpan ts;
     
     
     
     @Before
     public void setUp() {
-        app = new Appointment("Test", new TimeSpan(new Time(2015,01,01,1,0), new Time(2015,01,01,2,0)));
+        t1 = new Time(2014,01,01,1,1);
+        t2 = new Time(2015,01,01,1,1);
+        ts = new TimeSpan(t1, t2);
+        app = new Appointment("Test", ts);
         contact = new Contact("Jules");
         contact2 = new Contact("Rick");
         appWithContact = app;
@@ -45,12 +51,7 @@ public class AppointmentTest {
      */
     @Test
     public void testGetTimeSpan() {
-        System.out.println("getTimeSpan");
-        Appointment instance = app;
-        ITimeSpan expResult = new TimeSpan(new Time(2015,01,01,1,0), new Time(2015,01,01,2,0));
-        ITimeSpan result = instance.getTimeSpan();
-        assertThat(expResult, is(result));
-        
+        assertThat("Should be equal to ts", ts, is(app.getTimeSpan()));        
     }
 
     /**
@@ -74,12 +75,14 @@ public class AppointmentTest {
         Appointment instance = app;
         app.addContact(contact);
         app.addContact(contact2);
-        List<Contact> contacts = new ArrayList<Contact>();
-        contacts.add(contact);
-        contacts.add(contact2);
-        Iterator<Contact> expResult = contacts.iterator();
+        int size = 0;
         Iterator<Contact> result = instance.invited();
-        assertThat(expResult, is(result));
+        while(result.hasNext()) {
+            result.next();
+            size++;
+        }
+        assertEquals("Should be 2", 2, size);
+
         
     }
 
@@ -103,7 +106,7 @@ public class AppointmentTest {
     /**
      * Test of removeContact method, of class Appointment.
      */
-    @Test(expected=NullPointerException.class)
+    @Test
     public void testRemoveContact() {
         System.out.println("removeContact");
         Contact c = contact;

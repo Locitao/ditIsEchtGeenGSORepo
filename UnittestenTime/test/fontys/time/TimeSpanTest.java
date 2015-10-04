@@ -167,10 +167,20 @@ public class TimeSpanTest {
      */
     @Test
     public void testChangeLengthWith() {
-        System.out.println("changeLengthWith");
-        int minutes = 0;
-        TimeSpan instance = null;
-        instance.changeLengthWith(minutes);
+        try {
+            tsTest.changeLengthWith(0);
+            Assert.fail("Should have thrown an exception");
+
+        } catch (Exception e) {
+
+        }
+        
+        Time t = new Time(2015, 5, 5, 5, 10);
+        
+        TimeSpan ts = tsTest;
+        ts.setEndTime(t);
+        tsTest.changeLengthWith(60);
+        assertEquals("Ze moeten gelijk aan elkaar zijn", ts, tsTest);
     }
 
     /**
@@ -216,12 +226,19 @@ public class TimeSpanTest {
      */
     @Test
     public void testIntersectionWith() {
-        System.out.println("intersectionWith");
-        ITimeSpan timeSpan = tsTest;
-        TimeSpan instance = null;
-        ITimeSpan expResult = null;
-        ITimeSpan result = instance.intersectionWith(timeSpan);
-        assertEquals(expResult, result);
+        Time testTime1Test = new Time(2015, 8, 29, 19, 20);
+        Time testTime2Test = new Time(2015, 8, 27, 19, 20);
+        TimeSpan tsTimeSpanTest = new TimeSpan(testTime2Test, testTime1Test);
+        assertEquals("Ze moeten gelijk aan elkaar zijn", tsTimeSpanTest.getBeginTime().getDay(), tsTest.intersectionWith(tsTimeSpanTest).getBeginTime().getDay());
+        
+        
+        testTime1Test = new Time(2019, 8, 29, 19, 20);
+        testTime2Test = new Time(2012, 8, 27, 19, 20);
+        tsTimeSpanTest = tsTest;
+        tsTimeSpanTest.setBeginTime(testTime2Test);
+        tsTimeSpanTest.setEndTime(testTime1Test);
+        
+        assertEquals("moet null zijn", null , tsTest.intersectionWith(tsTimeSpanTest));
     }
     
 }

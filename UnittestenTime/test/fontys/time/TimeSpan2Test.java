@@ -166,10 +166,19 @@ public class TimeSpan2Test {
      */
     @Test
     public void testChangeLengthWith() {
-        System.out.println("changeLengthWith");
-        int minutes = 0;
-        TimeSpan instance = null;
-        instance.changeLengthWith(minutes);
+        try {
+            tsTest.changeLengthWith(0);
+            Assert.fail("Should have thrown an exception");
+
+        } catch (Exception e) {
+
+        }
+        Time t1Test = t1;
+        t1Test.plus(60);
+        TimeSpan2 tsTest2 = tsTest;
+        tsTest2.setEndTime(t2.plus(60));
+        tsTest.changeLengthWith(60);
+        assertEquals("Ze moeten gelijk aan elkaar zijn", tsTest2, tsTest);
     }
 
     /**
@@ -177,22 +186,20 @@ public class TimeSpan2Test {
      */
     @Test
     public void testIsPartOf() {
-        System.out.println("isPartOf");
-        ITimeSpan timeSpanTrue = tsTest;
-        ITime time1True = new Time(2014, 10, 10, 20, 15);
-        ITime time2True = new Time(2015, 5, 5, 5, 15);
-        TimeSpan2 instance = new TimeSpan2(time1True, time2True);
-        boolean expResultTrue = true;
-        boolean resultTrue = instance.isPartOf(timeSpanTrue);
-        assertEquals(expResultTrue, resultTrue);
+        Time testTime1Test = new Time(2015, 9, 27, 19, 20);
+        Time testTime2Test = new Time(2015, 8, 27, 19, 20);
+        TimeSpan2 tsTestExtra = new TimeSpan2(testTime2Test, testTime1Test);
+        assertEquals("Should be false", false, tsTest.isPartOf(tsTestExtra));
         
-        ITimeSpan timeSpanFalse = tsTest;
-        ITime time1False = new Time(2014, 10, 10, 20, 20);
-        ITime time2False = new Time(2015, 5, 5, 5, 10);
-        TimeSpan2 instance2 = new TimeSpan2(time1False, time2False);
-        boolean expResultFalse = false;
-        boolean resultFalse = instance.isPartOf(timeSpanFalse);
-        assertEquals(expResultFalse, resultFalse);
+        Time testTime1Test2 = new Time(2014, 10, 29, 19, 20);
+        Time testTime2Test2 = new Time(1900, 8, 27, 19, 20);
+        TimeSpan2 tsTimeSpanTest2 = new TimeSpan2(testTime2Test2, testTime1Test2);
+        assertEquals("must be false", false, tsTest.isPartOf(tsTimeSpanTest2));
+        
+        Time testTime1Test3 = new Time(2015, 10, 29, 19, 20);
+        Time testTime2Test3 = new Time(2015, 8, 27, 19, 20);
+        TimeSpan2 tsTimeSpanTest3 = new TimeSpan2(testTime2Test3,testTime1Test3);
+        assertEquals("Moet false zijn", false, tsTest.isPartOf(tsTimeSpanTest3));
     }
 
     /**
@@ -200,14 +207,15 @@ public class TimeSpan2Test {
      */
     @Test
     public void testUnionWith() {
-        System.out.println("unionWith");
-        ITimeSpan timeSpan = tsTest;
-        ITime time1 = new Time(2014, 10, 10, 20, 25);
-        ITime time2 = new Time(2015, 5, 5, 5, 4);
-        TimeSpan2 instance = new TimeSpan2(time1, time2);
-        ITimeSpan expResult = null;
-        ITimeSpan result = instance.unionWith(timeSpan);
-        assertEquals(expResult, result);
+        Time testTime1Test = new Time(2015, 8, 29, 19, 20);
+        Time testTime2Test = new Time(2015, 8, 27, 19, 20);
+        TimeSpan2 tsTimeSpanTest = new TimeSpan2(t1,t2);
+        assertEquals("Ze moeten gelijk aan elkaar zijn", tsTimeSpanTest.getBeginTime(), tsTest.unionWith(tsTimeSpanTest).getBeginTime());
+        
+        testTime1Test = new Time(2015, 9, 13, 19, 20);
+        testTime2Test = new Time(2015, 8, 27, 19, 20);
+        tsTimeSpanTest = new TimeSpan2(t1, t2);
+        assertEquals("Moet gelijk zijn ", tsTimeSpanTest.getBeginTime().getDay(), tsTest.unionWith(tsTimeSpanTest).getBeginTime().getDay());
     }
 
     /**
@@ -215,12 +223,19 @@ public class TimeSpan2Test {
      */
     @Test
     public void testIntersectionWith() {
-        System.out.println("intersectionWith");
-        ITimeSpan timeSpan = tsTest;
-        TimeSpan2 instance = tsTest;
-        ITimeSpan expResult = null;
-        ITimeSpan result = instance.intersectionWith(timeSpan);
-        assertEquals(expResult, result);
+        Time testTime1Test = new Time(2015, 8, 29, 19, 20);
+        Time testTime2Test = new Time(2015, 8, 27, 19, 20);
+        TimeSpan2 tsTimeSpanTest = new TimeSpan2(testTime2Test, testTime1Test);
+        assertEquals("Must be the same", tsTimeSpanTest.getBeginTime().getDay(), tsTest.intersectionWith(tsTimeSpanTest).getBeginTime().getDay());
+        
+        
+        testTime1Test = new Time(2019, 8, 29, 19, 20);
+        testTime2Test = new Time(2012, 8, 27, 19, 20);
+        tsTimeSpanTest = tsTest;
+        tsTimeSpanTest.setBeginTime(testTime2Test);
+        tsTimeSpanTest.setEndTime(testTime1Test);
+        
+        assertEquals("Should be null", null , tsTest.intersectionWith(tsTimeSpanTest));
     }
     
 }

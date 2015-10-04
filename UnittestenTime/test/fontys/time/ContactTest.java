@@ -89,18 +89,23 @@ public class ContactTest {
      */
     @Test
     public void testAppointments() {
-        System.out.println("appointments");
-        Contact instance = contact;
-        instance.addAppointment(app);
-        instance.addAppointment(app2);
-        ArrayList<Appointment> apps = new ArrayList<Appointment>();
-        apps.add(app);
-        apps.add(app2);
-        ArrayList<Appointment> expResult = apps;
-        Iterator<Appointment> result = instance.appointments();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        Appointment a = new Appointment("Afspraak 1", new TimeSpan(new Time(2015, 05, 19, 0, 0), new Time(2015,05,19,0,30)));
+        Appointment b = new Appointment("Afspraak 2", new TimeSpan(new Time(2015, 05, 19, 1, 0), new Time(2015,05,19,1,30)));
+        Appointment c = new Appointment("Afspraak 3", new TimeSpan(new Time(2015, 05, 19, 2, 0), new Time(2015,05,19,2,30)));
+        Appointment d = new Appointment("Afspraak 4", new TimeSpan(new Time(2015, 05, 19, 3, 0), new Time(2015,05,19,3,30)));
+        contact.addAppointment(a);
+        contact.addAppointment(b);
+        contact.addAppointment(c);
+        contact.addAppointment(d);
         
+
+        Iterator<Appointment> apps = contact.appointments();
+        while(apps.hasNext()) {
+            if(!(apps.next() instanceof Appointment)) {
+                fail("Should be an appointment");
+                return;
+            }
+        }
     }
     
 }
