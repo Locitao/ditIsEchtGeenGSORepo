@@ -24,9 +24,8 @@ public class TimeSpan2 implements ITimeSpan{
      * @param bt must be earlier than et
      * @param duration
      */
-    public TimeSpan2(ITime bt, long duration) {
+    public TimeSpan2(ITime bt, ITime et) {
         //ITime et = bt.plus(Integer.valueOf(String.valueOf(duration)));
-        
         if (bt.compareTo(et) <= 0) {
             throw new IllegalArgumentException("begin time "
                     + bt + " must be earlier than end time " + et);
@@ -34,7 +33,7 @@ public class TimeSpan2 implements ITimeSpan{
 
         this.bt = bt;
         this.et = et;
-        this.duration = duration;
+        this.duration = et.difference(bt);
     }
 
     @Override
@@ -74,6 +73,10 @@ public class TimeSpan2 implements ITimeSpan{
 
     @Override
     public void move(int minutes) {
+        if(minutes == 0)
+        {
+            throw new IllegalArgumentException();
+        }
         bt = bt.plus(minutes);
         et = bt.plus(minutes);
     }
@@ -115,7 +118,7 @@ public class TimeSpan2 implements ITimeSpan{
             endtime = timeSpan.getEndTime();
         }
 
-        return new TimeSpan2(begintime, endtime.difference(begintime));
+        return new TimeSpan2(begintime, endtime);
 
     }
 
@@ -140,7 +143,7 @@ public class TimeSpan2 implements ITimeSpan{
             return null;
         }
 
-        return new TimeSpan2(begintime, endtime.difference(begintime));
+        return new TimeSpan2(begintime, endtime);
     }
     
 }

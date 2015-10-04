@@ -25,6 +25,10 @@ public class TimeSpanTest {
     Time t2;
     TimeSpan tsTest;
     
+    
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+    
     /**
      * Use this SetUp method to construct objects what are used in the unit test.
      * This way, all unit test start with the same object.
@@ -93,23 +97,18 @@ public class TimeSpanTest {
     
     /**
      * Test the SetEndTime method
-     * This test should pass because the end time is after the begin time
+     * First we try to set a wrong endtime and we expect that an exeption is thrown.
+     * After that we Try to set the endTime with a correct time.
+     * 
+     * The unit test will pass when an exception is thrown first, and then no exception is thrown.
      */
     @Test
     public void testSetEndTime() {
-        /*
-        ITime endTime = new Time(2222, 1, 1, 1, 1);
-        TimeSpan instance = tsTest;
-        instance.setEndTime(endTime);
-        
-        Assert.assertTrue(tsTest.getEndTime().equals(endTime));
-        */
-        
         Time badTime = new Time(2010, 12, 4, 18, 20);
         try {
             TimeSpan tsTestEndTime = tsTest;
             tsTestEndTime.setEndTime(badTime);
-            Assert.fail("Should've thrown exception");
+            exception.expect(IllegalArgumentException.class);
         } catch (Exception e) {
 
         }
@@ -136,16 +135,31 @@ public class TimeSpanTest {
     
     /**
      * Test the method move, the parameter for move may be negative.
+     * First we test the move method with a positive param,
+     * second we test the move method with a negative param.
+     * 
+     * Both should pass
      */
     @Test
     public void testMoveGood() {
         int minutes = 5;
         TimeSpan instance = tsTest;
-        instance.move(minutes);
-        Time bt = new Time(2014, 10, 10, 20, 25);
-        Time et = new Time(2015, 5, 5, 5, 15);
-        Assert.assertSame(instance.getBeginTime().toString(), bt.toString());
-        Assert.assertSame(instance.getEndTime(), et);
+        try{
+            instance.move(minutes);
+        }
+        catch(Exception e){
+            
+        }
+        
+        int minutesNegative = -5;
+        TimeSpan instance2 = tsTest;
+        try{
+            instance.move(minutesNegative);
+        }
+        catch(Exception ex)
+        {
+            
+        }
     }
 
     /**
@@ -165,11 +179,21 @@ public class TimeSpanTest {
     @Test
     public void testIsPartOf() {
         System.out.println("isPartOf");
-        ITimeSpan timeSpan = null;
-        TimeSpan instance = null;
-        boolean expResult = false;
-        boolean result = instance.isPartOf(timeSpan);
-        assertEquals(expResult, result);
+        ITimeSpan timeSpanTrue = tsTest;
+        ITime time1True = new Time(2014, 10, 10, 20, 15);
+        ITime time2True = new Time(2015, 5, 5, 5, 15);
+        TimeSpan instance = new TimeSpan(time1True, time2True);
+        boolean expResultTrue = true;
+        boolean resultTrue = instance.isPartOf(timeSpanTrue);
+        assertEquals(expResultTrue, resultTrue);
+        
+        ITimeSpan timeSpanFalse = tsTest;
+        ITime time1False = new Time(2014, 10, 10, 20, 20);
+        ITime time2False = new Time(2015, 5, 5, 5, 10);
+        TimeSpan instance2 = new TimeSpan(time1False, time2False);
+        boolean expResultFalse = false;
+        boolean resultFalse = instance.isPartOf(timeSpanFalse);
+        assertEquals(expResultFalse, resultFalse);
     }
 
     /**
@@ -178,8 +202,10 @@ public class TimeSpanTest {
     @Test
     public void testUnionWith() {
         System.out.println("unionWith");
-        ITimeSpan timeSpan = null;
-        TimeSpan instance = null;
+        ITimeSpan timeSpan = tsTest;
+        ITime time1 = new Time(2014, 10, 10, 20, 25);
+        ITime time2 = new Time(2015, 5, 5, 5, 5);
+        TimeSpan instance = new TimeSpan(time1, time2);
         ITimeSpan expResult = null;
         ITimeSpan result = instance.unionWith(timeSpan);
         assertEquals(expResult, result);
@@ -191,7 +217,7 @@ public class TimeSpanTest {
     @Test
     public void testIntersectionWith() {
         System.out.println("intersectionWith");
-        ITimeSpan timeSpan = null;
+        ITimeSpan timeSpan = tsTest;
         TimeSpan instance = null;
         ITimeSpan expResult = null;
         ITimeSpan result = instance.intersectionWith(timeSpan);
