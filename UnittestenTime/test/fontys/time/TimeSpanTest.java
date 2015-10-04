@@ -38,9 +38,9 @@ public class TimeSpanTest {
     @Before
     public void SetUp()
     {
-        t1 = new Time(2014, 10, 10, 20, 20);
-        t2 = new Time(2015, 5, 5, 5, 10);
-        tsTest = new TimeSpan(t1, t2);
+        t1 = new Time(2015, 10, 10, 20, 20);
+        t2 = new Time(2014, 5, 5, 5, 10);
+        tsTest = new TimeSpan(t2, t1);
     }
     
     /**
@@ -48,7 +48,7 @@ public class TimeSpanTest {
      */
     @Test
     public void testGetBeginTime() {
-        assertEquals("Should equal t1", t1, tsTest.getBeginTime());
+        assertEquals("Should equal t1", t2, tsTest.getBeginTime());
     }
 
     /**
@@ -56,7 +56,7 @@ public class TimeSpanTest {
      */
     @Test
     public void testGetEndTime() {
-        assertEquals("Should equal t2", t2, tsTest.getEndTime());
+        assertEquals("Should equal t2", t1, tsTest.getEndTime());
     }
 
     /**
@@ -64,7 +64,7 @@ public class TimeSpanTest {
      */
     @Test
     public void testLength(){
-        assertEquals("Difference in time isn't correct", t2.difference(t1), tsTest.length());
+        assertEquals("Difference in time isn't correct", t1.difference(t2), tsTest.length());
     }
 
     /**
@@ -174,12 +174,20 @@ public class TimeSpanTest {
         } catch (Exception e) {
 
         }
-        Time testTime1Test = t2;
-        testTime1Test.plus(60);
-        TimeSpan tsTimeSpanTest = tsTest;
-        tsTimeSpanTest.setEndTime(testTime1Test);
+
+        try {
+            tsTest.changeLengthWith(0);
+            Assert.fail("Should have thrown an exception");
+
+        } catch (Exception e) {
+
+        }
+        Time t1Test = t1;
+        t1Test.plus(60);
+        TimeSpan tsTest2 = tsTest;
+        tsTest2.setEndTime(t2.plus(60));
         tsTest.changeLengthWith(60);
-        assertEquals("Ze moeten gelijk aan elkaar zijn", tsTimeSpanTest, tsTest);
+        assertEquals("Should be equal now", tsTest2, tsTest);
     }
 
     /**
@@ -188,21 +196,20 @@ public class TimeSpanTest {
     @Test
     public void testIsPartOf() {
         System.out.println("isPartOf");
-        ITimeSpan timeSpanTrue = tsTest;
-        ITime time1True = new Time(2014, 10, 10, 20, 15);
-        ITime time2True = new Time(2015, 5, 5, 5, 15);
-        TimeSpan instance = new TimeSpan(time1True, time2True);
-        boolean expResultTrue = true;
-        boolean resultTrue = instance.isPartOf(timeSpanTrue);
-        assertEquals(expResultTrue, resultTrue);
+        Time testTime1Test = new Time(2015, 9, 28, 19, 20);
+        Time testTime2Test = new Time(2015, 8, 27, 19, 20);
+        TimeSpan tsTestExtra = new TimeSpan(testTime2Test, testTime1Test);
+        assertEquals("Should be true", true, tsTest.isPartOf(tsTestExtra));
         
-        ITimeSpan timeSpanFalse = tsTest;
-        ITime time1False = new Time(2014, 10, 10, 20, 20);
-        ITime time2False = new Time(2015, 5, 5, 5, 10);
-        TimeSpan instance2 = new TimeSpan(time1False, time2False);
-        boolean expResultFalse = true;
-        boolean resultFalse = instance.isPartOf(timeSpanFalse);
-        assertEquals(expResultFalse, resultFalse);
+        Time testTime1Test2 = new Time(2014, 10, 28, 19, 20);
+        Time testTime2Test2 = new Time(1900, 8, 27, 19, 20);
+        TimeSpan tsTimeSpanTest2 = new TimeSpan(testTime2Test2,testTime1Test2);
+        assertEquals("Must be false", false, tsTest.isPartOf(tsTimeSpanTest2));
+        
+        Time testTime1Test3 = new Time(2015, 10, 28, 19, 20);
+        Time testTime2Test3 = new Time(2015, 8, 27, 19, 20);
+        TimeSpan tsTimeSpanTest3 = new TimeSpan(testTime2Test3,testTime1Test3);
+        assertEquals("Must be false", false, tsTest.isPartOf(tsTimeSpanTest3));
     }
 
     /**
@@ -234,8 +241,8 @@ public class TimeSpanTest {
         testTime1Test = new Time(2019, 8, 29, 19, 20);
         testTime2Test = new Time(2012, 8, 27, 19, 20);
         tsTimeSpanTest = tsTest;
-        tsTimeSpanTest.setBeginTime(testTime2Test);
-        tsTimeSpanTest.setEndTime(testTime1Test);
+        tsTimeSpanTest.setBeginTime(testTime1Test);
+        tsTimeSpanTest.setEndTime(testTime2Test);
         
         assertEquals("moet null zijn", null , tsTest.intersectionWith(tsTimeSpanTest));
     }

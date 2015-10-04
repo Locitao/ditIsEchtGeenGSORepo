@@ -224,7 +224,7 @@ public class TimeSpan2Test {
     @Test
     public void testIntersectionWith() {
         Time testTime1Test = new Time(2015, 8, 29, 19, 20);
-        Time testTime2Test = new Time(2015, 8, 27, 19, 20);
+        Time testTime2Test = new Time(2015, 8, 10, 19, 20);
         TimeSpan2 tsTimeSpanTest = new TimeSpan2(testTime2Test, testTime1Test);
         assertEquals("Must be the same", tsTimeSpanTest.getBeginTime().getDay(), tsTest.intersectionWith(tsTimeSpanTest).getBeginTime().getDay());
         
