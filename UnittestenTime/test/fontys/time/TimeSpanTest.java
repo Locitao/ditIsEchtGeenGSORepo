@@ -17,24 +17,30 @@ import org.junit.rules.ExpectedException;
 
 /**
  *
- * @author Rick van Duijnhoven - Created first unit tests
+ * @author Rick van Duijnhoven - Generated first unit tests
  * @author Jules Kreutzer - Completed unit tests, specifications
  */
 public class TimeSpanTest {
-    Time t1 = new Time(2014, 10, 10, 20, 20);
-    Time t2 = new Time(2015, 5, 5, 5, 10);
-    TimeSpan tsTest = new TimeSpan(t1, t2);
+    Time t1;
+    Time t2;
+    TimeSpan tsTest;
     
     /**
-     * exception can be used to expect an exception
-     * usage:
-     * exception.expect(ClassName.class);
+     * Use this SetUp method to construct objects what are used in the unit test.
+     * This way, all unit test start with the same object.
+     * 
+     * Make sure to use a field outside the SetUp method to assign the value, otherwise, it will not be recognized in tests.
      */
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
+    @Before
+    public void SetUp()
+    {
+        t1 = new Time(2014, 10, 10, 20, 20);
+        t2 = new Time(2015, 5, 5, 5, 10);
+        tsTest = new TimeSpan(t1, t2);
+    }
+    
     /**
-     * Test of getBeginTime method, of class TimeSpan.
+     * Test if the method GetBeginTime returns the right ITime.
      */
     @Test
     public void testGetBeginTime() {
@@ -42,7 +48,7 @@ public class TimeSpanTest {
     }
 
     /**
-     * Test of getEndTime method, of class TimeSpan.
+     * Test if the method GetEndTime returns the right ITime.
      */
     @Test
     public void testGetEndTime() {
@@ -82,7 +88,7 @@ public class TimeSpanTest {
         TimeSpan ts = tsTest;
         ts.setBeginTime(goodTime);
         
-        Assert.assertEquals(tsTest.getBeginTime(), goodTime);
+        Assert.assertEquals(" tsTest must be before endTime", tsTest.getBeginTime().toString(), goodTime.toString());
     }
 
     /**
@@ -104,24 +110,41 @@ public class TimeSpanTest {
      */
     @Test
     public void testSetEndTimeGood() {
-        ITime endTime = new Time(2017, 1, 1, 1, 1);
+        ITime endTime = new Time(2222, 1, 1, 1, 1);
         TimeSpan instance = tsTest;
         instance.setEndTime(endTime);
         
-        Assert.assertEquals(endTime.toString(), tsTest.getEndTime().toString());
+        Assert.assertTrue(tsTest.getEndTime().equals(endTime));
     }
 
     /**
-     * Test of move method, of class TimeSpan.
+     * Test the method move, the parameter for move may be negative.
+     * 
+     * Because minutes is 0 (zero) in this unit test, we except the IllegalArgumentException.class
+     * We can't move 0 minutes...
      */
-    @Test
-    public void testMove() {
+    @Test(expected=IllegalArgumentException.class)
+    public void testMoveBad() {
         System.out.println("move");
         int minutes = 0;
-        TimeSpan instance = null;
+        TimeSpan instance = tsTest;
         instance.move(minutes);
-        // TODO review the generated test code and remove the default call to fail.
-        exception.expect(NullPointerException.class);
+        
+        
+    }
+    
+    /**
+     * Test the method move, the parameter for move may be negative.
+     */
+    @Test
+    public void testMoveGood() {
+        int minutes = 5;
+        TimeSpan instance = tsTest;
+        instance.move(minutes);
+        Time bt = new Time(2014, 10, 10, 20, 25);
+        Time et = new Time(2015, 5, 5, 5, 15);
+        Assert.assertSame(instance.getBeginTime().toString(), bt.toString());
+        Assert.assertSame(instance.getEndTime(), et);
     }
 
     /**
@@ -133,7 +156,6 @@ public class TimeSpanTest {
         int minutes = 0;
         TimeSpan instance = null;
         instance.changeLengthWith(minutes);
-        exception.expect(NullPointerException.class);
     }
 
     /**
@@ -147,7 +169,6 @@ public class TimeSpanTest {
         boolean expResult = false;
         boolean result = instance.isPartOf(timeSpan);
         assertEquals(expResult, result);
-        exception.expect(NullPointerException.class);
     }
 
     /**
@@ -161,7 +182,6 @@ public class TimeSpanTest {
         ITimeSpan expResult = null;
         ITimeSpan result = instance.unionWith(timeSpan);
         assertEquals(expResult, result);
-        exception.expect(NullPointerException.class);
     }
 
     /**
@@ -175,6 +195,6 @@ public class TimeSpanTest {
         ITimeSpan expResult = null;
         ITimeSpan result = instance.intersectionWith(timeSpan);
         assertEquals(expResult, result);
-        exception.expect(NullPointerException.class);    }
+    }
     
 }

@@ -65,7 +65,7 @@ public class TimeSpan implements ITimeSpan {
     public void setEndTime(ITime endTime) {
         if (endTime.compareTo(bt) <= 0) {
             throw new IllegalArgumentException("end time "
-                    + et + " must be later then begin time " + bt);
+                    + et.toString() + " must be later then begin time " + bt.toString());
         }
 
         bt = endTime;
@@ -73,6 +73,10 @@ public class TimeSpan implements ITimeSpan {
 
     @Override
     public void move(int minutes) {
+        if(minutes == 0)
+        {
+            throw new IllegalArgumentException("How can we move 0 minutes?");
+        }
         bt = bt.plus(minutes);
         et = bt.plus(minutes);
     }
