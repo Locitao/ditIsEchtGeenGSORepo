@@ -108,7 +108,7 @@ public class TimeSpanTest {
         try {
             TimeSpan tsTestEndTime = tsTest;
             tsTestEndTime.setEndTime(badTime);
-            exception.expect(IllegalArgumentException.class);
+            fail("Illegalargumentexception expected for bad endTime");
         } catch (Exception e) {
 
         }
@@ -240,6 +240,7 @@ public class TimeSpanTest {
      */
     @Test
     public void testIntersectionWith() {
+        System.out.println("Intersection test");
         Time testTime1Test = new Time(2015, 8, 29, 19, 20);
         Time testTime2Test = new Time(2015, 8, 27, 19, 20);
         TimeSpan tsTimeSpanTest = new TimeSpan(testTime2Test, testTime1Test);
@@ -249,8 +250,8 @@ public class TimeSpanTest {
         testTime1Test = new Time(2019, 8, 29, 19, 20);
         testTime2Test = new Time(2012, 8, 27, 19, 20);
         tsTimeSpanTest = tsTest;
-        tsTimeSpanTest.setBeginTime(testTime1Test);
-        tsTimeSpanTest.setEndTime(testTime2Test);
+        tsTimeSpanTest.setBeginTime(testTime2Test);
+        tsTimeSpanTest.setEndTime(testTime1Test);
         
         assertEquals("moet null zijn", null , tsTest.intersectionWith(tsTimeSpanTest));
     }

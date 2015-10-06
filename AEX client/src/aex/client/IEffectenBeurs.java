@@ -5,11 +5,13 @@
  */
 package aex.client;
 
+import java.util.List;
+
 /**
  *
  * @author juleskreutzer
  */
 public interface IEffectenBeurs {
-    public IFonds getKoersen();
+    public List<IFonds> getKoersen();
     
 }

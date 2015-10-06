@@ -118,8 +118,16 @@ public class AppointmentTest {
     @Test(expected=IllegalArgumentException.class)
     public void testBadConstructor()
     {
-        Appointment p = new Appointment("asdf", null);
-        p = new Appointment(null, new TimeSpan(new Time(2000, 1, 1, 1, 1), new Time(2002, 1, 1, 1, 1)));
+        try{
+            Appointment p = new Appointment("asdf", null);
+            fail("Should have failed already");
+        }
+        catch(Exception e)
+        {   
+        }
+        
+        Appointment p = new Appointment(null, new TimeSpan(new Time(2000, 1, 1, 1, 1), new Time(2002, 1, 1, 1, 1)));
+        fail("Should have failed already");
     }
     
 }
