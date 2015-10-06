@@ -75,7 +75,7 @@ public class AEXBanner extends Application {
                 super.start();
             }
         };
-        timer.start();
+        //timer.start();
     }
 
     public void setKoersen(String koersen) {
