@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Rick van Duijnhoven
+ * @author Rick van Duijnhoven, basic setup
  * @author Jules - Improved Unit Tests
  */
 public class ContactTest {
@@ -74,14 +74,10 @@ public class ContactTest {
     /**
      * Test of removeAppointment method, of class Contact.
      */
-    @Test
+    @Test(expected=IllegalArgumentException.class)
     public void testRemoveAppointment() {
-        System.out.println("removeAppointment");
-        Appointment a = app;
-        Contact instance = contact;
-        instance.addAppointment(a);
-        instance.removeAppointment(a);
-        // TODO review the generated test code and remove the default call to fail.
+        contact.removeAppointment(app);
+        contact.removeAppointment(app);
     }
 
     /**

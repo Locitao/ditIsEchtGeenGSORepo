@@ -101,7 +101,11 @@ public class Contact {
     {
         if (a == null)
             throw new IllegalArgumentException("Appointment cannot be null.");
-        appointments.remove(a);
+        if (appointments.contains(a))
+        {
+            appointments.remove(a);
+        }
+            throw new IllegalArgumentException("Appointment didn't exist");
     }
     /**
      * Get all appointments through an iterator.
