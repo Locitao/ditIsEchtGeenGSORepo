@@ -18,6 +18,7 @@ import org.junit.rules.ExpectedException;
 /**
  *
  * @author Rick van Duijnhoven, copied from TimeSpanTest as per assignment.
+ * @author Jules Kreutzer, Fixed errors
  */
 public class TimeSpan2Test {
     Time t1;
