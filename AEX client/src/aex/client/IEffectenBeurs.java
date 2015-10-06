@@ -10,5 +10,6 @@ package aex.client;
  * @author juleskreutzer
  */
 public interface IEffectenBeurs {
+    public IFonds getKoersen();
     
 }

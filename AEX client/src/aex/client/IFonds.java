@@ -11,4 +11,7 @@ package aex.client;
  */
 public interface IFonds {
     
+    public String getName();
+    public double getKoers();
+    
 }
