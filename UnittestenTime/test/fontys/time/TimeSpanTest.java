@@ -73,24 +73,22 @@ public class TimeSpanTest {
      * 
      * Expected: IllegalArgument Exception as it will be thrown in the Time constructor
      */
-    @Test(expected=IllegalArgumentException.class)
-    public void testSetBeginTimeBad() {
-        Time badTime = new Time(2016, 10, 10, 25, 25);
-        
-        TimeSpan ts = tsTest;
-        ts.setBeginTime(badTime);
-    }
-    
-    /**
-     * Test the SetBeginTime method
-     * Because the date is right, it should not return any error
-     */
     @Test
-    public void testSetBeginTimeGood() {
-        Time goodTime = new Time(2013, 10, 13, 5, 5);
+    public void testSetBeginTimeBad() {
+        Time badTime = new Time(2022, 10, 10, 22, 25);
+        try{
+            TimeSpan ts = tsTest;
+            ts.setBeginTime(badTime);
+            fail("Should have thrown exception");
+        }
+        catch(Exception e)
+        {
+        }
         
-        TimeSpan ts = tsTest;
-        ts.setBeginTime(goodTime);
+        Time goodTime = new Time(2011, 10, 10, 22, 25);
+        TimeSpan ts2 = tsTest;
+        
+        ts2.setBeginTime(goodTime);
         
     }
     
