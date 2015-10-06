@@ -53,7 +53,7 @@ public class AEXBanner extends Application {
 
 
         // Start animation: text moves from right to left
-        AnimationTimer timer = new AnimationTimer() {
+        animationTimer  = new AnimationTimer() {
             private long prevUpdate;
 
             @Override
@@ -75,7 +75,7 @@ public class AEXBanner extends Application {
                 super.start();
             }
         };
-        //timer.start();
+        animationTimer.start();
     }
 
     public void setKoersen(String koersen) {
