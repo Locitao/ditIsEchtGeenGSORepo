@@ -53,7 +53,7 @@ public class AEXBanner extends Application {
 
 
         // Start animation: text moves from right to left
-        animationTimer = new AnimationTimer() {
+        AnimationTimer timer = new AnimationTimer() {
             private long prevUpdate;
 
             @Override
