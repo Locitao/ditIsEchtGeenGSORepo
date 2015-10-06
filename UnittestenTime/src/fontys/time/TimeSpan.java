@@ -55,7 +55,7 @@ public class TimeSpan implements ITimeSpan {
     public void setBeginTime(ITime beginTime) {
         if (beginTime.compareTo(et) <= 0) {
             throw new IllegalArgumentException("begin time "
-                    + bt + " must be earlier than end time " + et);
+                    + bt.getDay() + " " + bt.getDayInWeek() + " " + bt.getMonth() + " " + bt.getYear() + " must be earlier than end time " + et.getDay() + " " + et.getDayInWeek() + " " + et.getMonth() + " " + et.getYear());
         }
 
         bt = beginTime;
@@ -63,7 +63,7 @@ public class TimeSpan implements ITimeSpan {
 
     @Override
     public void setEndTime(ITime endTime) {
-        if (endTime.compareTo(bt) <= 0) {
+        if (bt.compareTo(endTime) <= 0) {
             throw new IllegalArgumentException("end time "
                     + et.toString() + " must be later then begin time " + bt.toString());
         }
