@@ -60,8 +60,9 @@ public class AEXBanner extends Application {
             public void handle(long now) {
                 long lag = now - prevUpdate;
                 if (lag >= NANO_TICKS) {
-                     // calculate new location of text
-                     // TODO
+                    textPosition -= 5;
+                    if((text.getLayoutBounds().getWidth() + textPosition) < 0)
+                        textPosition = WIDTH;
                      text.relocate(textPosition,0);
                     prevUpdate = now;
                 }
@@ -71,7 +72,7 @@ public class AEXBanner extends Application {
                 prevUpdate = System.nanoTime();
                 textPosition = WIDTH;
                 text.relocate(textPosition, 0);
-                setKoersen("Nothing to display");
+                setKoersen("Nothing to see here. Move along citizen.");
                 super.start();
             }
         };
