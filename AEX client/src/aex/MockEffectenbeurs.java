@@ -5,6 +5,11 @@
  */
 package aex;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,25 +22,43 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author juleskreutzer
  */
-public class MockEffectenbeurs implements IEffectenBeurs {
-
+public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenBeurs, Serializable {
     private List<IFonds> ifondsen;
     private Timer timer;
     private Random random;
 
-    public MockEffectenbeurs(List<IFonds>  fonds) {
+ 
+    public MockEffectenbeurs(List<IFonds>  fonds) throws RemoteException {
         ifondsen = fonds;
         this.timer = new Timer();
         this.random = new Random();
         timerStart();
     }
     
-    public MockEffectenbeurs()
+    /**
+     * Create a new registery
+     * @param number port number which the registry uses
+     * @return instance of registry
+     */
+    private Registry createRegistry(int number)
+    {
+        try{
+            Registry reg = LocateRegistry.createRegistry(number);
+            return reg;
+        }
+        catch(RemoteException ex)
+        {
+            System.out.print(ex.toString());
+        }
+        return null;
+    }
+    
+    public MockEffectenbeurs() throws RemoteException
     {
         List<IFonds> fondsen = new ArrayList<>();
         fondsen.add(new Fonds("Rick", 420));
         fondsen.add(new Fonds("Jules", 180));
-        fondsen.add(new Fonds("testFondsPleaseIgnore", 120));
+        fondsen.add(new Fonds("Test fonds", 120));
         
         this.ifondsen = fondsen;
         this.timer = new Timer();
