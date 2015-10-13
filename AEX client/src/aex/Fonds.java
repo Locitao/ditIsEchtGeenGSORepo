@@ -1,7 +1,9 @@
 package aex;
 
+import java.io.Serializable;
 
-public class Fonds implements IFonds {
+
+public class Fonds implements IFonds, Serializable {
     private String name;
     private double koers;
     

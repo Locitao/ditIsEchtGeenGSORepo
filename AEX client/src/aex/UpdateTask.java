@@ -36,7 +36,7 @@ public class UpdateTask extends TimerTask {
         try{
             // get the registry based on url (localhost) and port (1099 (Default port))
             registry = LocateRegistry.getRegistry("localhost", 1099);
-            beurs = (IEffectenBeurs)registry.lookup("beurs");
+            beurs = (IEffectenBeurs)registry.lookup("Beurs");
         }
         catch(RemoteException ex)
         {
