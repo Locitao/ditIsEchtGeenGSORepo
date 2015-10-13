@@ -40,9 +40,10 @@ public class AEXBanner extends Application {
         Font font = new Font("Arial", HEIGHT);
         text = new Text();
         text.setFont(font);
-        text.setFill(Color.BLACK);
+        text.setFill(Color.WHITE);
 
         Pane root = new Pane();
+        root.setStyle("-fx-background-color: black;");
         root.getChildren().add(text);
         Scene scene = new Scene(root, WIDTH, HEIGHT);
 
