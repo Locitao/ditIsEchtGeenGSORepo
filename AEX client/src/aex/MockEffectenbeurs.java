@@ -90,5 +90,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
     public List<IFonds> getKoersen() {
         return Collections.unmodifiableList(ifondsen);
     }
+    
+    
        
 }

@@ -5,15 +5,14 @@
  */
 package aex;
 
+import java.beans.PropertyChangeEvent;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.List;
-
+import java.util.EventListener;
 /**
  *
- * @author juleskreutzer
+ * @author rick
  */
-public interface IEffectenBeurs extends RemotePublisher {
-    public List<IFonds> getKoersen() throws RemoteException;
-    
+public interface RemotePropertyListener extends EventListener, Remote {
+    void propertyChange(PropertyChangeEvent evt) throws RemoteException;
 }

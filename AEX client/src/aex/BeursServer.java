@@ -17,6 +17,7 @@ import java.rmi.registry.Registry;
 public class BeursServer {
     private static Registry reg;
     
+    
     /**
      * First we try to create a new Registry, than we bind the "Beurs" so clients can make a call to it
      * @param args
