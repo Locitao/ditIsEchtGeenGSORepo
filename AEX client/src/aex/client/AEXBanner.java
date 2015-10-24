@@ -35,9 +35,14 @@ public class AEXBanner extends Application {
 
     @Override
     public void start(Stage primaryStage) throws RemoteException {
-
-        controller = new BannerController(this);
-
+        try{
+            controller = new BannerController(this);
+        }
+        catch(RemoteException ex)
+        {
+            ex.toString();
+            setKoersen("Nothing to see here. Move along citizen.");
+        }
         Font font = new Font("Arial", HEIGHT);
         text = new Text();
         text.setFont(font);

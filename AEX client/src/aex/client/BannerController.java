@@ -8,8 +8,11 @@ package aex.client;
 import aex.IEffectenBeurs;
 import aex.IFonds;
 import aex.MockEffectenbeurs;
+import aex.RemotePropertyListener;
 import aex.UpdateTask;
+import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import static java.util.Collections.list;
 import java.util.List;
 import java.util.Timer;
@@ -19,7 +22,7 @@ import javafx.application.Platform;
  *
  * @author juleskreutzer
  */
-public class BannerController {
+public class BannerController extends UnicastRemoteObject implements RemotePropertyListener {
     private AEXBanner banner;
     private IEffectenBeurs effectenbeurs;
     private Timer pollingTimer;
@@ -39,5 +42,28 @@ public class BannerController {
         pollingTimer.cancel();
         // Stop simulation timer of effectenbeurs
         // TODO
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+        switch(evt.getPropertyName())
+        {
+            case "koersen":
+                UpdateKoers((List<IFonds>) evt.getNewValue());
+                break;
+            default:
+                System.out.print("PropertyName is not recognized!");
+        }
+    }
+    
+    private void UpdateKoers(List<IFonds> fondsen) throws RemoteException
+    {
+        String koersen = "";
+        for(IFonds fonds : fondsen)
+        {
+            koersen += " " + fonds.getName() + " " + String.format("%1$-7s", fonds.getKoers());
+        }
+        
+        banner.setKoersen(koersen);
     }
 }

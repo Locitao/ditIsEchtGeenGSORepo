@@ -16,8 +16,19 @@ import java.rmi.registry.Registry;
  */
 public class BeursServer {
     private static Registry reg;
+    private BasicPublisher basicPublisher;
+    private IEffectenBeurs beurs;
     
-    
+    // Create a new constructor because "this" can't be used in basicPublisher.inform()
+    private BeursServer() throws RemoteException
+    {
+        basicPublisher = new BasicPublisher(new String[]{
+            "koersen"
+        });
+        
+        beurs = new MockEffectenbeurs();
+        basicPublisher.inform(this, "koersen", null, beurs.getKoersen());
+    }
     /**
      * First we try to create a new Registry, than we bind the "Beurs" so clients can make a call to it
      * @param args
@@ -28,22 +39,11 @@ public class BeursServer {
         try{
             // Create a new registry with the default port, 1099
             reg = LocateRegistry.createRegistry(1099);
+            new BeursServer();
         }
         catch(RemoteException ex)
         {
             System.out.print(ex.toString());
         }
-        
-        try{
-            IEffectenBeurs beurs = (IEffectenBeurs) new MockEffectenbeurs();
-            reg.rebind("Beurs", beurs);
-        }
-        catch(RemoteException ex)
-        {
-            System.out.print(ex.toString());
-        }
-        
-        
     }
-    
 }

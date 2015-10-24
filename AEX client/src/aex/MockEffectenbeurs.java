@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -26,6 +25,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
     private List<IFonds> ifondsen;
     private Timer timer;
     private Random random;
+    private BasicPublisher basicPublisher;
 
  
     public MockEffectenbeurs(List<IFonds>  fonds) throws RemoteException {
@@ -33,6 +33,10 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
         this.timer = new Timer();
         this.random = new Random();
         timerStart();
+        
+        basicPublisher = new BasicPublisher(new String[] {
+            "koersen"
+        });
     }
     
     /**
@@ -89,6 +93,16 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
     @Override
     public List<IFonds> getKoersen() {
         return Collections.unmodifiableList(ifondsen);
+    }
+
+    @Override
+    public void addListener(RemotePropertyListener listener, String property) throws RemoteException {
+        basicPublisher.addListener(listener, property);
+    }
+
+    @Override
+    public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
+        basicPublisher.removeListener(listener, property);
     }
     
     
