@@ -21,7 +21,7 @@ import java.util.TimerTask;
  *
  * @author juleskreutzer
  */
-public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenBeurs, Serializable {
+public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePublisher {
     private List<IFonds> ifondsen;
     private Timer timer;
     private Random random;
@@ -34,27 +34,9 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
         this.random = new Random();
         timerStart();
         
-        basicPublisher = new BasicPublisher(new String[] {
-            "koersen"
-        });
-    }
-    
-    /**
-     * Create a new registery
-     * @param number port number which the registry uses
-     * @return instance of registry
-     */
-    private Registry createRegistry(int number)
-    {
-        try{
-            Registry reg = LocateRegistry.createRegistry(number);
-            return reg;
-        }
-        catch(RemoteException ex)
-        {
-            System.out.print(ex.toString());
-        }
-        return null;
+//        basicPublisher = new BasicPublisher(new String[] {
+//            "koersen"
+//        });
     }
     
     public MockEffectenbeurs() throws RemoteException
@@ -64,6 +46,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
         fondsen.add(new Fonds("Jules", 180));
         fondsen.add(new Fonds("Test fonds", 120));
         
+        basicPublisher=new BasicPublisher(new String[] {"koersen"});
         this.ifondsen = fondsen;
         this.timer = new Timer();
         this.random = new Random();
@@ -83,6 +66,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
                             ((Fonds) f).setKoers(random.nextDouble() + random.nextInt(25));
                     }
                 }, 0, 2500);
+        basicPublisher.inform(this, "koersen", null, getKoersen());
     }
     
     public void stopTimer()
@@ -90,14 +74,23 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
         this.timer.cancel();
     }
     
-    @Override
     public List<IFonds> getKoersen() {
         return Collections.unmodifiableList(ifondsen);
     }
+//
+//    @Override
+//    public void addListener(RemotePropertyListener listener, String property) throws RemoteException {
+//        basicPublisher.addListener(listener, property);
+//    }
+//
+//    @Override
+//    public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
+//        basicPublisher.removeListener(listener, property);
+//    }
 
     @Override
     public void addListener(RemotePropertyListener listener, String property) throws RemoteException {
-        basicPublisher.addListener(listener, property);
+        basicPublisher.addListener(listener,property);
     }
 
     @Override
@@ -105,6 +98,4 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements IEffectenB
         basicPublisher.removeListener(listener, property);
     }
     
-    
-       
 }
