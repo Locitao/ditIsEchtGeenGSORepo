@@ -5,11 +5,10 @@
  */
 package aex;
 
-import aex.IEffectenBeurs;
-import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Scanner;
 
 /**
  *
@@ -17,21 +16,13 @@ import java.rmi.registry.Registry;
  */
 public class BeursServer {
     private Registry reg;
-    private BasicPublisher basicPublisher;
     private MockEffectenbeurs beurs;
     
-    // Create a new constructor because "this" can't be used in basicPublisher.inform()
     private BeursServer() throws RemoteException
     {
         reg = LocateRegistry.createRegistry(1099);
         beurs = new MockEffectenbeurs();
         reg.rebind("beurs", beurs);
-        
-        basicPublisher = new BasicPublisher(new String[]{
-            "koersen"
-        });
-        
-        basicPublisher.inform(this, "koersen", null, beurs.getKoersen());
     }
     /**
      * @param args
@@ -39,15 +30,34 @@ public class BeursServer {
      */
     public static void main(String[] args) throws RemoteException
     {
-        try{
-            // Create a new registry with the default port, 1099
-//            reg = LocateRegistry.createRegistry(1099);
-//            reg.bind("beurs", beurs);
-            new BeursServer();
-        }
-        catch(RemoteException ex)
+        BeursServer server = null;
+        try
         {
-            System.out.print(ex.toString());
+            server = new BeursServer();
+            server.start();
+            Scanner s = new Scanner(System.in);
+            System.out.println("Hit q to stop! :D");
+            while(!s.nextLine().equals("q"))
+            {
+                System.out.println("I said q, not that, smartass");
+            }
+            server.stop();
         }
+        catch (RemoteException ex)
+        {
+            System.out.println(ex);
+        }
+       
+    }
+    
+    public void start()
+    {
+        System.out.println("Starting server.");
+        ((MockEffectenbeurs) beurs).timerStart();
+    }
+    
+    public void stop()
+    {
+        ((MockEffectenbeurs) beurs).stopTimer();
     }
 }

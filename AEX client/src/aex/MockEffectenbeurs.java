@@ -5,10 +5,7 @@
  */
 package aex;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,16 +25,16 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePubl
     private BasicPublisher basicPublisher;
 
  
-    public MockEffectenbeurs(List<IFonds>  fonds) throws RemoteException {
-        ifondsen = fonds;
-        this.timer = new Timer();
-        this.random = new Random();
-        timerStart();
-        
-//        basicPublisher = new BasicPublisher(new String[] {
-//            "koersen"
-//        });
-    }
+//    public MockEffectenbeurs(List<IFonds>  fonds) throws RemoteException {
+//        ifondsen = fonds;
+//        this.timer = new Timer();
+//        this.random = new Random();
+//        timerStart();
+//        
+////        basicPublisher = new BasicPublisher(new String[] {
+////            "koersen"
+////        });
+//    }
     
     public MockEffectenbeurs() throws RemoteException
     {
@@ -46,7 +43,7 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePubl
         fondsen.add(new Fonds("Jules", 180));
         fondsen.add(new Fonds("Test fonds", 120));
         
-        basicPublisher=new BasicPublisher(new String[] {"koersen"});
+        basicPublisher = new BasicPublisher(new String[] {"koersen"});
         this.ifondsen = fondsen;
         this.timer = new Timer();
         this.random = new Random();
@@ -56,17 +53,19 @@ public class MockEffectenbeurs extends UnicastRemoteObject implements RemotePubl
     /**
      * Every 2.5 seconds, refreshes all courses with a new value.
      */
-    private void timerStart()
+    public void timerStart()
     {
         this.timer.schedule(new TimerTask()
                 {
                     @Override
                     public void run() {
-                        for(IFonds f : ifondsen)
+                        ifondsen.stream().forEach((f) -> {
                             ((Fonds) f).setKoers(random.nextDouble() + random.nextInt(25));
+                        });
+                        basicPublisher.inform(this, "koersen", null, getKoersen());
                     }
                 }, 0, 2500);
-        basicPublisher.inform(this, "koersen", null, getKoersen());
+        
     }
     
     public void stopTimer()

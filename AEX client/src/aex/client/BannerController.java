@@ -29,7 +29,7 @@ import javafx.application.Platform;
  *
  * @author juleskreutzer
  */
-public class BannerController implements RemotePropertyListener {
+public class BannerController extends UnicastRemoteObject implements RemotePropertyListener {
     private AEXBanner banner;
     private Registry reg;
 
@@ -49,34 +49,27 @@ public class BannerController implements RemotePropertyListener {
         // pollingTimer = new Timer();
         // pollingTimer.schedule(new UpdateTask(this.banner, this.effectenbeurs), 0, 2000);
     }
-
+    
     // Stop banner controller
     public void stop() {
-  //      pollingTimer.cancel();
-        // Stop simulation timer of effectenbeurs
-        // TODO
+        //
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        switch(evt.getPropertyName())
-        {
-            case "koersen":
-                UpdateKoers((List<IFonds>) evt.getNewValue());
-                break;
-            default:
-                System.out.print("PropertyName is not recognized!");
-        }
+        setString((List<IFonds>) evt.getNewValue());
     }
+
     
-    private void UpdateKoers(List<IFonds> fondsen) throws RemoteException
+    private void setString(List<IFonds> fondsen) throws RemoteException
     {
-        String koersen = "";
-        for(IFonds fonds : fondsen)
+        StringBuilder sb = new StringBuilder();
+        
+        for (IFonds f : fondsen)
         {
-            koersen += " " + fonds.getName() + " " + String.format("%1$-7s", fonds.getKoers());
+            sb.append(String.format("%s %02.2f \t\t", f.getName(), f.getKoers()));
         }
         
-        banner.setKoersen(koersen);
+        banner.setKoersen(sb.toString());
     }
 }
